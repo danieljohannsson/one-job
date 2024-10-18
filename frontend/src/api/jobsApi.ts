@@ -13,15 +13,29 @@ const jobsData: Job[] = [
     { id: 3, title: "Backend Developer", company: "API Solutions", location: "San Francisco, CA", description: "Build and optimize server-side logic." },
 ];
 
-export const fetchJobs = (query: string): Promise<Job[]> => {
-    return new Promise((resolve) => {
-        setTimeout(() => {
-            const filteredJobs = jobsData.filter(job =>
-                job.title.toLowerCase().includes(query.toLowerCase()) ||
-                job.company.toLowerCase().includes(query.toLowerCase()) ||
-                job.location.toLowerCase().includes(query.toLowerCase())
-            );
-            resolve(filteredJobs);
-        }, 1000); // Simulate network delay
-    });
+export const fetchJobs = async (query: string): Promise<Job[]> => {
+    try {
+        const response = await fetch(`https://links.api.jobtechdev.se/joblinksq?=systemutvecklare stockholm`);
+        if (!response.ok) {
+            throw new Error(`Error fetching jobs: ${response.statusText}`);
+        }
+
+        const data = await response.json();
+
+        // Assuming the API returns jobs in a format that matches the Job interface.
+        // If not, you might need to map or transform the data here.
+        const jobs: Job[] = data["hits"].map((job: any) => ({
+            id: job.id,
+            title: job.title,
+            company: job.employer.name,
+            location: job.workplace_addresses?.[0]?.municipality,
+            description: job.description
+        }));
+        console.log(`jobs` + jobs);
+
+        return jobs;
+    } catch (error) {
+        console.error('Error fetching jobs:', error);
+        return [];
+    }
 };
