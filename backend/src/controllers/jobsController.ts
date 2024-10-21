@@ -67,10 +67,11 @@ export const sendEmailResults = async (req: Request, res: Response) => {
 
     // Prepare email body with job results
     let emailBody = `<h1>Job Openings for ${role}</h1>`;
-    jobs.forEach((job: any) => {
-      emailBody += `<p><b>Title:</b> ${job.title}<br/>`;
-      emailBody += `<b>Company:</b> ${job.company}<br/>`;
-      emailBody += `<b>Location:</b> ${job.location}<br/><br/></p>`;
+    jobs?.hits?.forEach((job: any) => {
+      emailBody += `<p><b>Title:</b> ${job.headline}<br/>`;
+      emailBody += `<b>Company:</b> ${job.employer.name}<br/>`;
+      emailBody += `<b>Location:</b> ${job.workplace_addresses[0]?.municipality}<br/>`;
+      emailBody += `<b>URL:</b> ${job.source_links[0]?.url}<br/><br/></p>`;
     });
 
     // Send email
@@ -90,3 +91,10 @@ export const sendEmailResults = async (req: Request, res: Response) => {
     res.status(500).json({ error: 'Error sending email' });
   }
 };
+
+export const sendHealth = async (req: Request, res: Response) => {
+    res.status(200).json({
+        status: 'OK',
+        timestamp: new Date(),
+    });
+}
