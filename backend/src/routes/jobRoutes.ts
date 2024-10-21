@@ -1,20 +1,156 @@
 // routes/jobs.ts
 import express from 'express';
-import { searchJobs, sendEmailResults } from '../controllers/jobsController';
+import { searchJobs, sendEmailResults, sendHealth } from '../controllers/jobsController';
 
 const router = express.Router();
 
-router.get('/health', (req, res) => {
-    res.status(200).json({
-        status: 'OK',
-        timestamp: new Date(),
-    });
-})
+/**
+ * @swagger
+ * /api/jobs/health:
+ *   get:
+ *     summary: Health check of the API
+ *     description: Returns a 200 status if the API is running.
+ *     responses:
+ *       200:
+ *         description: API is healthy
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "OK"
+ */
+router.get(['/', '/health'], sendHealth);
 
-// POST /api/jobs/search -> To search for jobs
+/**
+ * @swagger
+ * /api/jobs/search:
+ *   post:
+ *     summary: Search for jobs
+ *     description: Search for job openings by role, location, and company.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 description: Job role to search for
+ *                 example: "Software Engineer"
+ *               location:
+ *                 type: string
+ *                 description: Location to search for
+ *                 example: "San Francisco"
+ *               company:
+ *                 type: string
+ *                 description: Company name to search for
+ *                 example: "Google"
+ *     responses:
+ *       200:
+ *         description: A list of job openings matching the search criteria
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 $ref: '#/components/schemas/Job'
+ *       400:
+ *         description: Bad request
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid search parameters"
+ */
 router.post('/search', searchJobs);
 
-// POST /api/jobs/send-email -> To send job results via email
+/**
+ * @swagger
+ * /api/jobs/send-email:
+ *   post:
+ *     summary: Send job search results via email
+ *     description: Sends the results of a job search to a given email address. The request body must include role, location, company, and email.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - role
+ *               - location
+ *               - company
+ *               - email
+ *             properties:
+ *               role:
+ *                 type: string
+ *                 description: The job role for which results were searched
+ *                 example: "Software Engineer"
+ *               location:
+ *                 type: string
+ *                 description: The job location for which results were searched
+ *                 example: "San Francisco"
+ *               company:
+ *                 type: string
+ *                 description: The company name for which results were searched
+ *                 example: "Google"
+ *               email:
+ *                 type: string
+ *                 description: The email address to send the job results to
+ *                 example: "user@example.com"
+ *     responses:
+ *       200:
+ *         description: Email sent successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "Job results sent successfully to user@example.com"
+ *       400:
+ *         description: Invalid request data (e.g., missing role, location, company, or email)
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 error:
+ *                   type: string
+ *                   example: "Invalid request: Missing required fields"
+ */
 router.post('/send-email', sendEmailResults);
+
+/**
+ * @swagger
+ * components:
+ *   schemas:
+ *     Job:
+ *       type: object
+ *       properties:
+ *         id:
+ *           type: integer
+ *           description: The job ID
+ *         title:
+ *           type: string
+ *           description: Job title
+ *           example: "Software Engineer"
+ *         location:
+ *           type: string
+ *           description: Job location
+ *           example: "San Francisco"
+ *         company:
+ *           type: string
+ *           description: The company offering the job
+ *           example: "Google"
+ */
 
 export default router;
