@@ -1,26 +1,15 @@
 {
   "compilerOptions": {
-    "target": "es5",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
-    "allowJs": true,
-    "skipLibCheck": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true,
-    "strict": true,
-    "forceConsistentCasingInFileNames": true,
-    "noFallthroughCasesInSwitch": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "resolveJsonModule": true,
-    "isolatedModules": true,
-    "noEmit": true,
-    "jsx": "react-jsx"
+    "target": "ES6",                         // Target for compiled JavaScript
+    "module": "commonjs",                     // Module system (for Node.js)
+    "strict": true,                           // Enable strict type checking
+    "esModuleInterop": true,                  // Interoperability between ES6 and CommonJS
+    "outDir": "./dist",                       // Output directory for compiled files
+    "rootDir": "./src",                       // Root directory for TypeScript files
+    "forceConsistentCasingInFileNames": true, // Enforce case-sensitive file names
+    "skipLibCheck": true,                     // Skip type checking for libraries
+    "noEmit": false                           // Ensure that compilation emits output
   },
-  "include": [
-    "src"
-  ]
+  "include": ["src/**/*.ts"],                 // Include all .ts files in src directory
+  "exclude": ["node_modules", "dist"]         // Exclude node_modules and the dist folder
 }
