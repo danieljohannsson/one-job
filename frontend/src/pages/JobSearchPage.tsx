@@ -4,7 +4,6 @@ import SearchBar from '../components/SearchBar';
 import JobCard from '../components/JobCard';
 import { useFetchJobs } from '../hooks/useFetchJobs';
 import { fetchJobs } from '../api/jobsApi';
-import { sendJobResults } from '../../../backend/src/services/emailService';
 
 const JobSearchPage: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
