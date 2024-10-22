@@ -3,11 +3,10 @@ import React, { useState } from 'react';
 import { Input, Button, Stack } from '@chakra-ui/react';
 
 interface SearchBarProps {
-  onSearch: (role: string, location: string, company: string) => void;
-  onEmail: (email: string) => void;
+  onEmail: (email: string, role: string, location: string, company: string) => void;
 }
 
-const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onEmail }) => {
+const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
   const [role, setRole] = useState('');
   const [location, setLocation] = useState('');
   const [company, setCompany] = useState('');
@@ -15,8 +14,7 @@ const SearchBar: React.FC<SearchBarProps> = ({ onSearch, onEmail }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSearch(role, location, company);
-    onEmail(email);
+    onEmail(email, role, location, company);
   };
 
   return (
