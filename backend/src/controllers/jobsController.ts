@@ -38,6 +38,7 @@ const fetchJobs = async (role: string, location: string, company: string) => {
 
 // Function to fetch jobs based on search criteria
 export const searchJobs = async (req: Request, res: Response) => {
+  console.log('/search was called')
   const { role, location, company } = req.body;
 
   try {
@@ -50,6 +51,7 @@ export const searchJobs = async (req: Request, res: Response) => {
 
 // Function to send job results via email
 export const sendEmailResults = async (req: Request, res: Response) => {
+  console.log('/send-email was called')
   const { email, role, location, company } = req.body;
 
   try {
@@ -93,6 +95,7 @@ export const sendEmailResults = async (req: Request, res: Response) => {
 };
 
 export const sendHealth = async (req: Request, res: Response) => {
+  console.log('/health or / was called')
     res.status(200).json({
         status: 'OK',
         timestamp: new Date(),
