@@ -1,8 +1,5 @@
 // /src/pages/JobSearchPage.tsx
-import React, { useEffect, useState } from 'react';
 import SearchBar from '../components/SearchBar';
-import { useFetchJobs } from '../hooks/useFetchJobs';
-import { fetchJobs } from '../api/jobsApi';
 
 const JobSearchPage: React.FC = () => {
 
@@ -30,7 +27,6 @@ const handleEmailSubmit = async (email: string, role: string, location: string, 
 
     return (
         <div className="job-search-page">
-            <h1>Job Search</h1>
             <SearchBar onEmail={handleEmailSubmit} />
         </div>
     );
