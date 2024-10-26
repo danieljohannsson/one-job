@@ -5,6 +5,8 @@ import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
 import router from './routes/jobRoutes';
 import { setupSwagger } from './swagger';
+import cron from 'node-cron';
+import { sendDailyJobRecommendations } from './controllers/jobsController';
 
 dotenv.config();  // Load environment variables from .env file
 
@@ -22,6 +24,14 @@ setupSwagger(app);
 
 // Define routes
 app.use('/api/jobs', router);
+
+// Run the task daily at ...
+const HOURS = '13';
+const MINUTES = '10';
+cron.schedule(`${MINUTES} ${HOURS} * * *`, async () => {
+  console.log(`Running daily job recommendation task at ${HOURS}:${MINUTES}`);
+  await sendDailyJobRecommendations();
+});
 
 // Error handling middleware (optional, for handling errors globally)
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

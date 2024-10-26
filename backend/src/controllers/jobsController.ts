@@ -1,7 +1,8 @@
 // controllers/jobsController.ts
 import { Request, Response } from 'express';
-import nodemailer from 'nodemailer';
 import dotenv from 'dotenv';
+import { storeUser, fetchUsers } from '../database';
+import { sendEmail } from '../services/emailService';
 
 dotenv.config();
 
@@ -58,33 +59,10 @@ export const sendEmailResults = async (req: Request, res: Response) => {
     // Fetch jobs based on search criteria
     const jobs = await fetchJobs(role, location, company);
 
-    // Configure email transporter
-    const transporter = nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS,
-      },
-    });
+    // Send email with job results
+    await sendEmail(jobs, email, role);
 
-    // Prepare email body with job results
-    let emailBody = `<h1>Job Openings for ${role}</h1>`;
-    jobs?.hits?.forEach((job: any) => {
-      emailBody += `<p><b>Title:</b> ${job.headline}<br/>`;
-      emailBody += `<b>Company:</b> ${job.employer.name}<br/>`;
-      emailBody += `<b>Location:</b> ${job.workplace_addresses[0]?.municipality}<br/>`;
-      emailBody += `<b>URL:</b> ${job.source_links[0]?.url}<br/><br/></p>`;
-    });
-
-    // Send email
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to: email,
-      subject: `Job Openings for ${role}`,
-      html: emailBody,
-    };
-
-    await transporter.sendMail(mailOptions);
+    storeUser(email, role, location, company);
 
     res.status(200).json({ message: `Job results sent to ${email}` });
 
@@ -94,10 +72,48 @@ export const sendEmailResults = async (req: Request, res: Response) => {
   }
 };
 
+export const sendDailyJobRecommendations = async () => {
+  try {
+    // Fetch all emails and roles from SQLite
+    const users = await fetchUsers();
+
+    if (users.length === 0) {
+      console.log('No users to send recommendations to.');
+      return;
+    }
+
+    // Loop through each user and send job recommendations
+    for (const { email, role, location ,company } of users) {
+      try {
+        // Fetch jobs based on the role
+        const jobs = await fetchJobs(role, location, company);
+
+        await sendEmail(jobs, email, role);
+
+        console.log(`Job recommendations sent to ${email}`);
+      } catch (error) {
+        console.error(`Failed to send jobs to ${email}`);
+      }
+    }
+  } catch (error) {
+    console.error('Error sending daily job recommendations:', error);
+  }
+};
+
 export const sendHealth = async (req: Request, res: Response) => {
   console.log('/health or / was called')
     res.status(200).json({
         status: 'OK',
         timestamp: new Date(),
     });
+}
+
+export const users = async (req: Request, res: Response) => {
+    console.log('/users was called')
+    try {
+      const users = await fetchUsers();
+      res.status(200).json( users );
+    } catch (error) {
+      res.status(500).json({ error: 'Error retrieving data' });
+    }
 }
