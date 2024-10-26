@@ -1,6 +1,6 @@
 // routes/jobs.ts
 import express from 'express';
-import { searchJobs, sendEmailResults, sendHealth } from '../controllers/jobsController';
+import { searchJobs, sendEmailResults, sendHealth, users } from '../controllers/jobsController';
 
 const router = express.Router();
 
@@ -128,6 +128,42 @@ router.post('/search', searchJobs);
  *                   example: "Invalid request: Missing required fields"
  */
 router.post('/send-email', sendEmailResults);
+
+/**
+ * @swagger
+ * /api/jobs/users:
+ *   get:
+ *     summary: Get all users
+ *     description: Fetch all users who have signed up for job alerts.
+ *     responses:
+ *       200:
+ *         description: A list of users
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   email:
+ *                     type: string
+ *                     description: The user's email address
+ *                     example: "user@example.com"
+ *                   role:
+ *                     type: string
+ *                     description: The job role the user is interested in
+ *                     example: "Software Engineer"
+ *                   location:
+ *                     type: string
+ *                     description: The location the user prefers for job openings
+ *                     example: "New York"
+ *                   company:
+ *                     type: string
+ *                     description: The company the user is interested in
+ *                     example: "Google"
+ */
+
+router.get('/users', users);
 
 /**
  * @swagger
