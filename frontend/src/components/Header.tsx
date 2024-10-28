@@ -1,6 +1,5 @@
 import React from 'react';
-import { Box, Heading, Stack, Text, Image } from '@chakra-ui/react';
-import logo from '../assets/1Job.webp';
+import { Box, Heading, Text } from '@chakra-ui/react';
 
 const Header = () => {
   return (
@@ -10,18 +9,13 @@ const Header = () => {
       px={6}
       py={8}
       bg="rgba(255, 255, 255, 0.2)"
-      boxShadow="lg"
+      // boxShadow="lg"
       borderRadius="2xl"
       backdropFilter="blur(10px)"
       border="1px solid rgba(255, 255, 255, 0.3)"
       textAlign="center"
       mb={10}
     >
-      {/* Logo */}
-      {/* <Stack align="center" mb={4}>
-      <Image src={logo} alt="1Job Logo" width="100px" mb="4" />
-      </Stack> */}
-
       {/* Header Title */}
       <Heading
         as="h1"
