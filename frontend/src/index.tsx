@@ -1,7 +1,7 @@
 // /src/index.tsx
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';  // Optional: Global styles
+import './index.css'; // Optional: Global styles
 import App from './App';
 
 ReactDOM.render(

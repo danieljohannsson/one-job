@@ -1,9 +1,24 @@
 import React, { useState } from 'react';
-import { Input, Button, Stack, useToast, Box, Heading, Grid, InputGroup, InputLeftElement } from '@chakra-ui/react';
+import {
+  Input,
+  Button,
+  Stack,
+  useToast,
+  Box,
+  Heading,
+  Grid,
+  InputGroup,
+  InputLeftElement,
+} from '@chakra-ui/react';
 import { AtSignIcon, Search2Icon, InfoOutlineIcon } from '@chakra-ui/icons';
 
 interface SearchBarProps {
-  onEmail: (email: string, role: string, location: string, company: string) => void;
+  onEmail: (
+    email: string,
+    role: string,
+    location: string,
+    company: string
+  ) => void;
 }
 
 const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
@@ -65,7 +80,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
       <form onSubmit={handleSubmit}>
         <Grid templateColumns="1fr" gap={6}>
           <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<Search2Icon color="gray.300" />} />
+            <InputLeftElement
+              pointerEvents="none"
+              children={<Search2Icon color="gray.300" />}
+            />
             <Input
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -79,7 +97,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<InfoOutlineIcon color="gray.300" />} />
+            <InputLeftElement
+              pointerEvents="none"
+              children={<InfoOutlineIcon color="gray.300" />}
+            />
             <Input
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -93,7 +114,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<InfoOutlineIcon color="gray.300" />} />
+            <InputLeftElement
+              pointerEvents="none"
+              children={<InfoOutlineIcon color="gray.300" />}
+            />
             <Input
               value={company}
               onChange={(e) => setCompany(e.target.value)}
@@ -107,7 +131,10 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement pointerEvents="none" children={<AtSignIcon color="gray.300" />} />
+            <InputLeftElement
+              pointerEvents="none"
+              children={<AtSignIcon color="gray.300" />}
+            />
             <Input
               value={email}
               onChange={(e) => setEmail(e.target.value)}
