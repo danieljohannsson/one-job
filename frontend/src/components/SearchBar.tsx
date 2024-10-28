@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import {
   Input,
   Button,
-  Stack,
   useToast,
   Box,
   Heading,
@@ -80,10 +79,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
       <form onSubmit={handleSubmit}>
         <Grid templateColumns="1fr" gap={6}>
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<Search2Icon color="gray.300" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <Search2Icon color="gray.300" />
+            </InputLeftElement>
             <Input
               value={role}
               onChange={(e) => setRole(e.target.value)}
@@ -97,10 +95,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<InfoOutlineIcon color="gray.300" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <InfoOutlineIcon color="gray.300" />
+            </InputLeftElement>
             <Input
               value={location}
               onChange={(e) => setLocation(e.target.value)}
@@ -114,10 +111,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<InfoOutlineIcon color="gray.300" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <InfoOutlineIcon color="gray.300" />
+            </InputLeftElement>
             <Input
               value={company}
               onChange={(e) => setCompany(e.target.value)}
@@ -131,10 +127,9 @@ const SearchBar: React.FC<SearchBarProps> = ({ onEmail }) => {
           </InputGroup>
 
           <InputGroup>
-            <InputLeftElement
-              pointerEvents="none"
-              children={<AtSignIcon color="gray.300" />}
-            />
+            <InputLeftElement pointerEvents="none">
+              <AtSignIcon color="gray.300" />
+            </InputLeftElement>
             <Input
               value={email}
               onChange={(e) => setEmail(e.target.value)}

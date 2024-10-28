@@ -1,7 +1,7 @@
 // /src/pages/JobSearchPage.tsx
 import SearchBar from '../components/SearchBar';
 import Header from '../components/Header';
-import { Box, Stack, Image, Input, Button, Text } from '@chakra-ui/react';
+import { Box, Stack, Text } from '@chakra-ui/react';
 import { handleEmailSubmit } from '../utils/emailService';
 
 const JobSearchPage: React.FC = () => {
