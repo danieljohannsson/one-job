@@ -7,7 +7,11 @@ import { handleEmailSubmit } from '../utils/emailService';
 const JobSearchPage: React.FC = () => {
   // frontend/src/components/SearchBar.tsx
   return (
-    <Box minHeight="100vh" backgroundColor="gray.50" padding="6">
+    <Box
+      minHeight="100vh"
+      backgroundColor="rgba(255, 255, 255, 0.8)"
+      padding="6"
+    >
       {/* Header */}
       <Header />
 
