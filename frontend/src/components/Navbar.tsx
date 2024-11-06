@@ -1,4 +1,3 @@
-import React from 'react';
 import { Box, Flex, Heading, HStack, Text, Button } from '@chakra-ui/react';
 
 const Navbar = () => {

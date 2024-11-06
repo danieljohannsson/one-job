@@ -4,7 +4,7 @@ export const handleEmailSubmit = async (
   location: string,
   company: string
 ) => {
-  const PORT = process.env.BACKEND_PORT || 5001;
+  const PORT = import.meta.env.VITE_BACKEND_PORT || 5001;
   try {
     const response = await fetch(
       `http://localhost:${PORT}/api/jobs/send-email`,
@@ -21,8 +21,8 @@ export const handleEmailSubmit = async (
         }),
       }
     );
-    const result = await response.text();
-    console.log(result);
+    const result: { message: string } = await response.json();
+    console.log(result.message);
   } catch (error) {
     console.error('Error sending email:', error);
   }
