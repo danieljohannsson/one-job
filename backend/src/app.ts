@@ -6,7 +6,7 @@ import dotenv from 'dotenv';
 import router from './routes/jobRoutes';
 import { setupSwagger } from './swagger';
 import cron from 'node-cron';
-import { sendDailyJobRecommendations } from './controllers/jobsController';
+import { sendDailyJobRecommendations } from './controllers/jobController';
 
 dotenv.config();  // Load environment variables from .env file
 

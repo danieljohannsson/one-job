@@ -1,8 +1,8 @@
 // controllers/jobsController.ts
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { storeUser, fetchUsers } from '../db/database';
 import { sendEmail } from '../services/emailService';
+import { createUser, getUsers } from './userController';
 
 dotenv.config();
 
@@ -62,7 +62,7 @@ export const sendEmailResults = async (req: Request, res: Response) => {
     // Send email with job results
     await sendEmail(jobs, email, role);
 
-    storeUser(email, role, location, company);
+    createUser(email, role, location, company);
 
     res.status(200).json({ message: `Job results sent to ${email}` });
 
@@ -75,7 +75,7 @@ export const sendEmailResults = async (req: Request, res: Response) => {
 export const sendDailyJobRecommendations = async () => {
   try {
     // Fetch all emails and roles from SQLite
-    const users = await fetchUsers();
+    const users = await getUsers();
 
     if (users.length === 0) {
       console.log('No users to send recommendations to.');
@@ -111,7 +111,7 @@ export const sendHealth = async (req: Request, res: Response) => {
 export const users = async (req: Request, res: Response) => {
     console.log('/users was called')
     try {
-      const users = await fetchUsers();
+      const users = await getUsers();
       res.status(200).json( users );
     } catch (error) {
       res.status(500).json({ error: 'Error retrieving data' });

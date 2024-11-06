@@ -1,6 +1,6 @@
 // routes/jobs.ts
 import express from 'express';
-import { searchJobs, sendEmailResults, sendHealth, users } from '../controllers/jobsController';
+import { searchJobs, sendEmailResults, sendHealth, users } from '../controllers/jobController';
 
 const router = express.Router();
 

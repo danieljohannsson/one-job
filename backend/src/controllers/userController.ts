@@ -1,15 +1,8 @@
-import { drizzle } from 'drizzle-orm/libsql';
-import { createClient } from '@libsql/client'; // Import the SQLite client
-import { usersTable } from './schema';
+import { usersTable } from '../db/schema';
 import { db } from '..';
 
-// Open the database connection
-
-
-
-
 // Function to store email and role
-export const storeUser = async (email: string, role: string, location: string, company: string) => {
+export const createUser = async (email: string, role: string, location: string, company: string) => {
     try {
       const database = await db;
       
@@ -26,7 +19,7 @@ export const storeUser = async (email: string, role: string, location: string, c
     }
   };
 
-  export const fetchUsers = async () => {
+  export const getUsers = async () => {
     try {
       const database = await db;
       const users = await database.select().from(usersTable);
