@@ -10,6 +10,7 @@
 
 # local
 /dist
+*.db
 
 # production
 /build
