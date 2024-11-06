@@ -1,7 +1,7 @@
 // controllers/jobsController.ts
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { storeUser, fetchUsers } from '../database';
+import { storeUser, fetchUsers } from '../db/database';
 import { sendEmail } from '../services/emailService';
 
 dotenv.config();
