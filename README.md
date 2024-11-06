@@ -3,3 +3,6 @@
 # OneJob 
 OneJob is the only website you need for applying for jobs. We mail you when interesting job listing appear, not the other way around.
 Gone are the days of having to check multiple websites for new job listings.
+
+BACKEND: Must have .env file with EMAIL_USER, EMAIL_PASS and PORT specified
+FRONTEND: Must have .env with PORT
