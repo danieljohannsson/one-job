@@ -2,6 +2,7 @@ import swaggerJsdoc from 'swagger-jsdoc';
 import swaggerUi from 'swagger-ui-express';
 import { Express } from 'express';
 
+const PORT = process.env.PORT || 5000;
 // Swagger definition and options
 const options = {
   definition: {
@@ -13,7 +14,7 @@ const options = {
     },
     servers: [
       {
-        url: 'http://localhost:5000', // URL of the server
+        url: `http://localhost:${PORT}`, // URL of the server
         description: 'Local server',
       },
     ],
