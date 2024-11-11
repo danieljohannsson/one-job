@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { sendEmail } from '../services/emailService';
 import { createUser, getUsers } from './userController';
+import { createCompany } from './companyController';
 
 dotenv.config();
 
@@ -12,9 +13,8 @@ const JOB_API_URL = 'https://links.api.jobtechdev.se/joblinks';
 const fetchJobs = async (role: string, location: string, company: string) => {
   const url = new URL(JOB_API_URL);
   const params = {
-    q: role,
-    location: location,
-    company: company,
+    q: `${role} ${location} ${company}`,
+    sort: 'relevance',
   };
 
   // Append search parameters to the URL
@@ -34,6 +34,7 @@ const fetchJobs = async (role: string, location: string, company: string) => {
   }
 
   const data = await response.json();
+  console.log(data)
   return data;
 };
 
@@ -62,7 +63,9 @@ export const sendEmailResults = async (req: Request, res: Response) => {
     // Send email with job results
     await sendEmail(jobs, email, role);
 
-    createUser(email, role, location, company);
+    const userId = await createUser(email, role, location, company);
+
+    await createCompany(company, Number(userId))
 
     res.status(200).json({ message: `Job results sent to ${email}` });
 
@@ -106,14 +109,4 @@ export const sendHealth = async (req: Request, res: Response) => {
         status: 'OK',
         timestamp: new Date(),
     });
-}
-
-export const users = async (req: Request, res: Response) => {
-    console.log('/users was called')
-    try {
-      const users = await getUsers();
-      res.status(200).json( users );
-    } catch (error) {
-      res.status(500).json({ error: 'Error retrieving data' });
-    }
 }

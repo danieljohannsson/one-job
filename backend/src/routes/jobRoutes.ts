@@ -1,6 +1,8 @@
 // routes/jobs.ts
 import express from 'express';
-import { searchJobs, sendEmailResults, sendHealth, users } from '../controllers/jobController';
+import { searchJobs, sendEmailResults, sendHealth } from '../controllers/jobController';
+import { users } from '../controllers/userController';
+import { companies } from '../controllers/companyController';
 
 const router = express.Router();
 
@@ -164,6 +166,47 @@ router.post('/send-email', sendEmailResults);
  */
 
 router.get('/users', users);
+
+/**
+ * @swagger
+ * /api/jobs/companies:
+ *   get:
+ *     summary: Get a list of companies
+ *     description: Retrieves a list of all companies in the database.
+ *     responses:
+ *       200:
+ *         description: A list of companies.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   id:
+ *                     type: integer
+ *                     description: The unique identifier of the company.
+ *                     example: 1
+ *                   name:
+ *                     type: string
+ *                     description: The name of the company.
+ *                     example: "TechCorp"
+ *                   userId:
+ *                     type: integer
+ *                     description: The ID of the user associated with the company.
+ *                     example: 42
+ *       500:
+ *         description: Internal server error.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 message:
+ *                   type: string
+ *                   example: "An error occurred while retrieving companies."
+ */
+router.get('/companies', companies);
 
 /**
  * @swagger
