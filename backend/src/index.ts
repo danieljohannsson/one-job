@@ -11,5 +11,5 @@ const client = createClient({
 export const db = drizzle(client)
 
 app.listen(PORT, () => {
-    console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on PORT: ${PORT}`);
 });
