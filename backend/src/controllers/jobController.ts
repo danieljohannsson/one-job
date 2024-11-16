@@ -10,7 +10,7 @@ dotenv.config();
 const JOB_API_URL = 'https://links.api.jobtechdev.se/joblinks';
 
 // Helper function to fetch jobs using native fetch API
-const fetchJobs = async (role: string, location: string, company: string) => {
+const fetchJobs = async (role: string, location: string, company: string = '') => {
   const url = new URL(JOB_API_URL);
   const params = {
     q: `${role} ${location} ${company}`,
@@ -86,10 +86,10 @@ export const sendDailyJobRecommendations = async () => {
     }
 
     // Loop through each user and send job recommendations
-    for (const { email, role, location ,company } of users) {
+    for (const { users_table: { email, role, location} } of users) {
       try {
         // Fetch jobs based on the role
-        const jobs = await fetchJobs(role, location, company);
+        const jobs = await fetchJobs(role, location);
 
         await sendEmail(jobs, email, role);
 
