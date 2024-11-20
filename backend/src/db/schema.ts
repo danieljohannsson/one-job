@@ -1,22 +1,54 @@
 import { sql } from "drizzle-orm";
-import { sqliteTable, text, integer } from "drizzle-orm/sqlite-core";
+import { sqliteTable, text, integer, primaryKey
+ } from "drizzle-orm/sqlite-core";
 
-// Users table with an auto-generated ID
-export const usersTable = sqliteTable("users_table", {
-  id: integer({ mode: 'number' }).primaryKey({ autoIncrement: true }), // Auto-generated ID column
-  email: text("email").notNull(),
-  role: text("role").notNull(),
-  location: text("location").notNull(),
-  company: text("company").notNull(),
-  createdAt: text("created_at").default(sql`(datetime('now', 'localtime'))`).notNull()
+export const users = sqliteTable('users', {
+  userId: integer('user_id').primaryKey({autoIncrement: true}),
+  email: text('email').notNull().unique(),
+  createdAt: text('created_at').default('CURRENT_TIMESTAMP'),
 });
 
-// Companies table with an auto-generated ID
-export const companiesTable = sqliteTable("companies_table", {
-  id: integer({ mode: 'number' }).primaryKey({ autoIncrement: true }), // Auto-generated ID column
-  name: text("name").notNull().unique(), // Example column for company name
-  industry: text("industry"), // Example column for industry type
+export const roles = sqliteTable('roles', {
+  roleId: integer('role_id').primaryKey({autoIncrement: true}),
+  roleName: text('role_name').notNull().unique(),
+});
+
+export const locations = sqliteTable('locations', {
+  locationId: integer('location_id').primaryKey({autoIncrement: true}),
+  locationName: text('location_name').notNull().unique(),
+});
+
+export const companies = sqliteTable('companies', {
+  companyId: integer('company_id').primaryKey({autoIncrement: true}),
+  companyName: text('company_name').notNull().unique(),
+});
+
+
+export const userPreferences = sqliteTable('user_preferences', {
+  preferenceId: integer('preference_id').primaryKey({autoIncrement: true}),
+  userId: integer('user_id').references(() => users.userId, { onDelete: 'cascade' }).notNull(),
+  roleId: integer('role_id').references(() => roles.roleId),
+  locationId: integer('location_id').references(() => locations.locationId),
+  companyId: integer('company_id').references(() => companies.companyId),
+}
+);
+
+export const jobs = sqliteTable('jobs', {
+  jobId: integer('job_id').primaryKey({autoIncrement: true}),
+  title: text('title').notNull(),
+  companyName: text('company_name'),
+  location: text('location'),
+  role: text('role'),
+  url: text('url'), // Link to the job posting
+  createdAt: text('created_at').default('CURRENT_TIMESTAMP'),
+});
+
+export const jobRecommendations = sqliteTable('job_recommendations', {
+  recommendationId: integer('recommendation_id').primaryKey({autoIncrement: true}),
+  sentAt: text('sent_at').default('CURRENT_TIMESTAMP'),
   userId: integer("user_id")
-    .references(() => usersTable.id) // Set up the foreign key reference
-    .notNull()
-});
+    .references(() => users.userId, { onDelete: 'cascade' }) // Set up the foreign key reference
+    .notNull(),
+  jobId: integer("job_id").references(() => jobs.jobId).notNull(),
+}
+);
