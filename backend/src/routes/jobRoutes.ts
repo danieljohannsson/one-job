@@ -1,11 +1,18 @@
 // routes/jobs.ts
-import express from 'express';
-import { searchJobs, sendEmailResults, sendHealth } from '../controllers/jobController';
+import express, { Request, Response } from 'express';
+import { searchJobs, sendEmailResults,  } from '../controllers/jobController';
 import { users } from '../controllers/userController';
 import { companies } from '../controllers/companyController';
 
 const router = express.Router();
 
+export const sendHealth = async (req: Request, res: Response) => {
+    console.log('/health or / was called')
+      res.status(200).json({
+          status: 'OK',
+          timestamp: new Date(),
+      });
+  }
 /**
  * @swagger
  * /api/jobs/health:

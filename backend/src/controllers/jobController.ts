@@ -2,8 +2,7 @@
 import { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { sendEmail } from '../services/emailService';
-import { createUser, getUsers } from './userController';
-import { createCompany } from './companyController';
+import { createCompany, createUser } from '../db/util';
 
 dotenv.config();
 
@@ -63,7 +62,7 @@ export const sendEmailResults = async (req: Request, res: Response) => {
     // Send email with job results
     await sendEmail(jobs, email, role);
 
-    const userId = await createUser(email, role, location, company);
+    const userId = await createUser(email);
 
     await createCompany(company, Number(userId))
 
@@ -102,11 +101,3 @@ export const sendDailyJobRecommendations = async () => {
     console.error('Error sending daily job recommendations:', error);
   }
 };
-
-export const sendHealth = async (req: Request, res: Response) => {
-  console.log('/health or / was called')
-    res.status(200).json({
-        status: 'OK',
-        timestamp: new Date(),
-    });
-}
