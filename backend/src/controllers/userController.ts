@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { getUsers } from '../db/util';
+import { getUsers } from '../db/helpers/user';
 
   export const users = async (req: Request, res: Response) => {
     console.log('/users was called')

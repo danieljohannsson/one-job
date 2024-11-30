@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
-import { getCompanies } from '../db/util';
+import { getCompanies } from '../db/helpers/company';
+
 
 // Function to store email and role
   export const companies = async (req: Request, res: Response) => {
