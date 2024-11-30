@@ -3,10 +3,10 @@ import { userPreferencesTable } from "../schema";
 
 // Insert user preference
 export const insertUserPreference = async (
-    userId: number, 
-    roleId: number, 
-    locationId: number, 
-    companyId: number
+    userId: string, 
+    roleId: string, 
+    locationId: string, 
+    companyId: string
   ) => {
     const userPreference = await db.insert(userPreferencesTable)
       .values({

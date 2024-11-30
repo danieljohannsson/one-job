@@ -17,3 +17,19 @@ export const findOrCreateCompany = async (companyName: string) => {
 
   return companyRecord;
 };
+
+export const getCompanies = async () => {
+  try {
+    const database = await db; 
+    
+    const companies = await database.select().from(companiesTable);
+    
+    console.log('Getting all companies from the database: ', companies)
+    
+    return companies;
+  
+  } catch (error) {
+    console.error('Error fetching companies:', error);
+    throw error;
+  }
+};
