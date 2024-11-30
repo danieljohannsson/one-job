@@ -7,7 +7,7 @@ export const handleEmailSubmit = async (
   const PORT = import.meta.env.VITE_BACKEND_PORT || 5001;
   try {
     const response = await fetch(
-      `http://localhost:${PORT}/api/jobs/send-email`,
+      `http://localhost:${PORT}/preferences/preference`,
       {
         method: 'POST',
         headers: {
