@@ -1,8 +1,15 @@
 import { db } from "..";
-import { fetchJobs } from "../controllers/jobController";
-import { companiesTable, jobsTable, locationsTable, rolesTable, userPreferencesTable, usersTable } from "../db/schema";
+import { fetchJobTechJobs } from "../controllers/jobController";
+import { companiesTable, jobRecommendationsTable, jobsTable, locationsTable, rolesTable, userPreferencesTable, usersTable } from "../db/schema";
 import { eq } from "drizzle-orm";
 
+type Job = {
+  title: string;
+  companyName: string;
+  location: string;
+  url: string;
+  roleName: string;
+};
 
 export const fetchAndStoreJobs = async () => {
   // Fetch all job preferences
@@ -22,24 +29,33 @@ export const fetchAndStoreJobs = async () => {
 
     try {
       // Example external API call to fetch jobs
-      const response = await fetchJobs(preference.roleName, preference.locationName, preference.companyName);
+      const response = await fetchJobTechJobs(preference.roleName, preference.locationName, preference.companyName);
 
-      const jobs = response.data; // Assume the API returns an array of jobs
+      const jobs: Job[] = response; // Assume the API returns an array of jobs
+
+      console.log(jobs);
 
       // Insert jobs into the database
       for (const job of jobs) {
-        await db.insert(jobsTable).values({
+        const jobRow = await db.insert(jobsTable).values({
           title: job.title,
-          companyName: job.company,
+          companyName: job.companyName,
           location: job.location,
           url: job.url,
           role: job.roleName,
-        });
+        }).returning();
+
+        const jobId = jobRow[0].jobId;
+
+        await db.insert(jobRecommendationsTable).values({
+          jobId: jobId,
+          userId: preference.userId,
+        })        
       }
 
       console.log(`Stored jobs for user ${preference.userId}`);
     } catch (error) {
-      console.error(`Error fetching jobs for user ${preference.userId}:`, error);
+      console.error(`Error inserting jobs for user ${preference.userId}:`, error);
     }
   }
 };

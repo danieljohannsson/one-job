@@ -1,15 +1,20 @@
 // controllers/jobsController.ts
-import { Request, Response } from 'express';
 import dotenv from 'dotenv';
-import { sendEmail } from '../services/emailService';
-import { createCompany, createUser } from '../db/util';
+import { title } from 'process';
 
 dotenv.config();
 
-const JOB_API_URL = 'https://links.api.jobtechdev.se/joblinks';
+type Job = {
+  title: string;
+  companyName: string;
+  location: string;
+  url: string;
+  roleName: string;
+};
 
 // Helper function to fetch jobs using native fetch API
-const fetchJobs = async (role: string, location: string, company: string = '') => {
+export const fetchJobTechJobs = async (role: string, location: string, company: string = '') => {
+  const JOB_API_URL = 'https://links.api.jobtechdev.se/joblinks';
   const url = new URL(JOB_API_URL);
   const params = {
     q: `${role} ${location} ${company}`,
@@ -34,70 +39,40 @@ const fetchJobs = async (role: string, location: string, company: string = '') =
 
   const data = await response.json();
   console.log(data)
-  return data;
+  const results: Job[] = data.hits.map((hit: any) => ({
+    title: hit.headline,
+    companyName: hit.employer?.name,
+    location: hit.workplace_addresses[0]?.municipality,
+    url: hit.source_links[0]?.url,
+    roleName: hit.occupation_field?.label,
+  }));
+  console.log('Results :' + results)
+  return results
 };
+// export const sendDailyJobRecommendations = async () => {
+//   try {
+//     // Fetch all emails and roles from SQLite
+//     const users = await getUsers();
 
-// Function to fetch jobs based on search criteria
-export const searchJobs = async (req: Request, res: Response) => {
-  console.log('/search was called')
-  const { role, location, company } = req.body;
+//     if (users.length === 0) {
+//       console.log('No users to send recommendations to.');
+//       return;
+//     }
 
-  try {
-    const jobs = await fetchJobs(role, location, company);
-    res.status(200).json(jobs);
-  } catch (error) {
-    res.status(500).json({ error: (error as Error).message });
-  }
-};
+//     // Loop through each user and send job recommendations
+//     for (const { users_table: { email, role, location} } of users) {
+//       try {
+//         // Fetch jobs based on the role
+//         const jobs = await fetchJobs(role, location);
 
-// Function to send job results via email
-export const sendEmailResults = async (req: Request, res: Response) => {
-  console.log('/send-email was called')
-  const { email, role, location, company } = req.body;
+//         await sendEmail(jobs, email, role);
 
-  try {
-    // Fetch jobs based on search criteria
-    const jobs = await fetchJobs(role, location, company);
-
-    // Send email with job results
-    await sendEmail(jobs, email, role);
-
-    const userId = await createUser(email);
-
-    await createCompany(company, Number(userId))
-
-    res.status(200).json({ message: `Job results sent to ${email}` });
-
-  } catch (error) {
-    console.log(error);
-    res.status(500).json({ error: 'Error sending email' });
-  }
-};
-
-export const sendDailyJobRecommendations = async () => {
-  try {
-    // Fetch all emails and roles from SQLite
-    const users = await getUsers();
-
-    if (users.length === 0) {
-      console.log('No users to send recommendations to.');
-      return;
-    }
-
-    // Loop through each user and send job recommendations
-    for (const { users_table: { email, role, location} } of users) {
-      try {
-        // Fetch jobs based on the role
-        const jobs = await fetchJobs(role, location);
-
-        await sendEmail(jobs, email, role);
-
-        console.log(`Job recommendations sent to ${email}`);
-      } catch (error) {
-        console.error(`Failed to send jobs to ${email}`);
-      }
-    }
-  } catch (error) {
-    console.error('Error sending daily job recommendations:', error);
-  }
-};
+//         console.log(`Job recommendations sent to ${email}`);
+//       } catch (error) {
+//         console.error(`Failed to send jobs to ${email}`);
+//       }
+//     }
+//   } catch (error) {
+//     console.error('Error sending daily job recommendations:', error);
+//   }
+// };

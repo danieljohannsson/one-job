@@ -3,10 +3,12 @@ import express from 'express';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import dotenv from 'dotenv';
-import router from './routes/jobRoutes';
-import { setupSwagger } from './swagger';
-import cron from 'node-cron';
-import { sendDailyJobRecommendations } from './controllers/jobController';
+// import { setupSwagger } from './swagger';
+import './jobs/jobNotifier'; // Ensure the cron job is initialized
+import { scheduleJobPuller } from './jobs/jobPuller';
+import { scheduleJobNotifier } from './jobs/jobNotifier';
+import { addRoutes } from './routes';
+import { addSwagger } from './routes/swagger';
 
 dotenv.config();  // Load environment variables from .env file
 
@@ -19,19 +21,15 @@ app.use(cors());  // Enable Cross-Origin Resource Sharing
 app.use(bodyParser.json());  // Parse incoming requests with JSON payloads
 app.use(bodyParser.urlencoded({ extended: true }));  // Parse URL-encoded data
 
-// Setup Swagger UI
-setupSwagger(app);
+addSwagger(app);  // Add Swagger API documentation
 
 // Define routes
-app.use('/api/jobs', router);
+addRoutes(app);
 
-// Run the task daily at ...
-const HOURS = '13';
-const MINUTES = '10';
-cron.schedule(`${MINUTES} ${HOURS} * * *`, async () => {
-  console.log(`Running daily job recommendation task at ${HOURS}:${MINUTES}`);
-  await sendDailyJobRecommendations();
-});
+const hours: string = '14';
+const minutes: string = '30';
+scheduleJobPuller(hours, minutes);
+scheduleJobNotifier(hours, (+minutes + 1).toString());
 
 // Error handling middleware (optional, for handling errors globally)
 app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {

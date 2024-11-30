@@ -1,9 +1,7 @@
 import cron from 'node-cron';
-import { db } from '..';
 import { sendEmail } from '../services/emailService';
-import { jobRecommendationsTable, jobsTable, usersTable } from '../db/schema';
-import { eq } from 'drizzle-orm';
-import { getJobsPrefferedByUser, getUsers } from '../db/util';
+import { getJobsPrefferedByUser } from '../db/util';
+import { getUsers } from '../db/helpers/user';
 
 export const scheduleJobNotifier = async (hours: string, minutes: string) => {
     // Schedule the job to run daily at 8 AM
@@ -22,6 +20,7 @@ const fetchAndNotifyUsers = async () => {
     for (const user of users) {
       try {
         const jobs = await getJobsPrefferedByUser(user.userId);
+        console.log(jobs);
   
       //Prepare email subject
       const subject = 'Daily Job Recommendations';

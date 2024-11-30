@@ -1,12 +1,8 @@
 // backend/src/emailService.ts
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
 
-// interface Job {
-//   title: string;
-//   company: string;
-//   location: string;
-//   link: string;
-// }
+dotenv.config();
 
 // Create a transporter
 const transporter = nodemailer.createTransport({
@@ -19,7 +15,8 @@ const transporter = nodemailer.createTransport({
 
 // Function to send email
 export const sendEmail = async (to: string, subject: string, html: string) => {
-  const mailOptions = {
+  try {
+    const mailOptions = {
     from: process.env.EMAIL_USER,
     to,
     subject,
@@ -27,4 +24,8 @@ export const sendEmail = async (to: string, subject: string, html: string) => {
   };
 
   await transporter.sendMail(mailOptions);
+  console.log('Email sent successfully');
+} catch (error) {
+  console.error('Error sending email:', error);
+}
 };
