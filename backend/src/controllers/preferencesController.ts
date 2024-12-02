@@ -13,7 +13,7 @@ export const postUserPreference = async (req: Request, res: Response) => {
 
   try {
     // Find or create user
-    if (await !userExists(email)) {
+    if (!(await userExists(email))) {
       // Prepare email subject
       const subject = 'Welcome to Job Alerts Subscription';
 
