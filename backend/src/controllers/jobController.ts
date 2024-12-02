@@ -13,7 +13,11 @@ type Job = {
 };
 
 // Helper function to fetch jobs using native fetch API
-export const fetchJobTechJobs = async (role: string, location: string, company: string = '') => {
+export const fetchJobTechJobs = async (
+  role: string,
+  location: string,
+  company: string = '',
+) => {
   const JOB_API_URL = 'https://links.api.jobtechdev.se/joblinks';
   const url = new URL(JOB_API_URL);
   const params = {
@@ -22,8 +26,8 @@ export const fetchJobTechJobs = async (role: string, location: string, company: 
   };
 
   // Append search parameters to the URL
-  Object.keys(params).forEach(key =>
-    url.searchParams.append(key, (params as any)[key])
+  Object.keys(params).forEach((key) =>
+    url.searchParams.append(key, (params as any)[key]),
   );
 
   const response = await fetch(url.toString(), {
@@ -38,7 +42,7 @@ export const fetchJobTechJobs = async (role: string, location: string, company: 
   }
 
   const data = await response.json();
-  console.log(data)
+  console.log(data);
   const results: Job[] = data.hits.map((hit: any) => ({
     title: hit.headline,
     companyName: hit.employer?.name,
@@ -46,8 +50,8 @@ export const fetchJobTechJobs = async (role: string, location: string, company: 
     url: hit.source_links[0]?.url,
     roleName: hit.occupation_field?.label,
   }));
-  console.log('Results :' + results)
-  return results
+  console.log('Results :' + results);
+  return results;
 };
 // export const sendDailyJobRecommendations = async () => {
 //   try {

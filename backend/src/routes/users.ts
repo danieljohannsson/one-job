@@ -45,8 +45,6 @@ const router = express.Router();
  *                   example: "Internal server error."
  */
 
-
 router.get('/', users);
-
 
 export default router;

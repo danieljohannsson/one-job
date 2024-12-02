@@ -1,15 +1,15 @@
 {
   "compilerOptions": {
-    "target": "ES6",                         // Target for compiled JavaScript
-    "module": "commonjs",                     // Module system (for Node.js)
-    "strict": true,                           // Enable strict type checking
-    "esModuleInterop": true,                  // Interoperability between ES6 and CommonJS
-    "outDir": "./dist",                       // Output directory for compiled files
-    "rootDir": "./src",                       // Root directory for TypeScript files
+    "target": "ES6", // Target for compiled JavaScript
+    "module": "commonjs", // Module system (for Node.js)
+    "strict": true, // Enable strict type checking
+    "esModuleInterop": true, // Interoperability between ES6 and CommonJS
+    "outDir": "./dist", // Output directory for compiled files
+    "rootDir": "./src", // Root directory for TypeScript files
     "forceConsistentCasingInFileNames": true, // Enforce case-sensitive file names
-    "skipLibCheck": true,                     // Skip type checking for libraries
-    "noEmit": false                           // Ensure that compilation emits output
+    "skipLibCheck": true, // Skip type checking for libraries
+    "noEmit": false // Ensure that compilation emits output
   },
-  "include": ["src/**/*.ts"],                 // Include all .ts files in src directory
-  "exclude": ["node_modules", "dist"]         // Exclude node_modules and the dist folder
+  "include": ["src/**/*.ts"], // Include all .ts files in src directory
+  "exclude": ["node_modules", "dist"] // Exclude node_modules and the dist folder
 }
