@@ -4,7 +4,6 @@ import { findOrCreateRole } from '../db/helpers/role';
 import { findOrCreateLocation } from '../db/helpers/location';
 import { findOrCreateCompany } from '../db/helpers/company';
 import { insertUserPreference } from '../db/helpers/preference';
-import { send } from 'process';
 import { sendEmail } from '../services/emailService';
 
 export const postUserPreference = async (req: Request, res: Response) => {

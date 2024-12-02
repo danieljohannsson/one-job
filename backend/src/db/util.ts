@@ -1,12 +1,6 @@
 import { db } from '..';
 import { Job } from '../types/job';
-import {
-  companiesTable,
-  jobRecommendationsTable,
-  jobsTable,
-  userPreferencesTable,
-  usersTable,
-} from './schema';
+import { jobRecommendationsTable, jobsTable } from './schema';
 import { eq } from 'drizzle-orm';
 
 export const getJobsPrefferedByUser = async (userId: string) => {

@@ -1,11 +1,5 @@
 import { sql } from 'drizzle-orm';
-import {
-  sqliteTable,
-  text,
-  integer,
-  primaryKey,
-  check,
-} from 'drizzle-orm/sqlite-core';
+import { sqliteTable, text, check } from 'drizzle-orm/sqlite-core';
 import { v4 as uuidv4 } from 'uuid';
 
 export const usersTable = sqliteTable(

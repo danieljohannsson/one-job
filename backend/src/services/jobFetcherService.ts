@@ -11,7 +11,6 @@ import {
 import { eq } from 'drizzle-orm';
 import { Job } from '../types/job';
 
-
 export const fetchAndStoreJobs = async () => {
   // Fetch all job preferences
   const preferences = await db

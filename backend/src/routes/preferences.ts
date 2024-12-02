@@ -1,5 +1,4 @@
 import express from 'express';
-import { users } from '../controllers/userController';
 import { postUserPreference } from '../controllers/preferencesController';
 
 const router = express.Router();
