@@ -2,6 +2,7 @@ import cron from 'node-cron';
 import { sendEmail } from '../services/emailService';
 import { getJobsPrefferedByUser } from '../db/util';
 import { getUsers } from '../db/helpers/user';
+import { Job } from '../types/job';
 
 export const scheduleJobNotifier = async (hours: string, minutes: string) => {
   // Schedule the job to run daily at 8 AM
@@ -19,7 +20,7 @@ const fetchAndNotifyUsers = async () => {
 
   for (const user of users) {
     try {
-      const jobs = await getJobsPrefferedByUser(user.userId);
+      const jobs: Job[] = await getJobsPrefferedByUser(user.userId);
       console.log(jobs);
 
       //Prepare email subject
@@ -36,7 +37,7 @@ const fetchAndNotifyUsers = async () => {
     `;
 
       // Loop through jobs and add each one to the email body
-      jobs.forEach((job: any) => {
+      jobs.forEach((job: Job) => {
         emailContent += `
         <div style="padding: 20px; margin-bottom: 20px; border-radius: 10px; background-color: #ffffff; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); border: 1px solid #e0e0e0;">
           <h2 style="font-size: 20px; color: #333; font-weight: bold; margin-bottom: 10px;">${job.title}</h2>
@@ -45,7 +46,7 @@ const fetchAndNotifyUsers = async () => {
           <a href="${job.url}" style="color: transparent; background: linear-gradient(90deg, rgba(53, 138, 210, 1) 0%, rgba(72, 232, 185, 1) 100%); background-clip: text; text-decoration: none; font-size: 14px; font-weight: bold; display: inline-block;">View Job Posting</a>
         </div>
       `;
-        roles += job.role;
+        roles += job.roleName;
       });
 
       emailContent += `

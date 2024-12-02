@@ -62,7 +62,7 @@ export const jobsTable = sqliteTable('jobs', {
   title: text('title').notNull(),
   companyName: text('company_name'),
   location: text('location'),
-  role: text('role'),
+  roleName: text('role'),
   url: text('url'), // Link to the job posting
   createdAt: text('created_at').default(sql`(datetime('now', 'localtime'))`),
 });

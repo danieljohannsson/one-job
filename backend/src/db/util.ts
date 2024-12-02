@@ -1,4 +1,5 @@
 import { db } from '..';
+import { Job } from '../types/job';
 import {
   companiesTable,
   jobRecommendationsTable,
@@ -15,15 +16,16 @@ export const getJobsPrefferedByUser = async (userId: string) => {
     .from(jobRecommendationsTable)
     .where(eq(jobRecommendationsTable.userId, userId));
 
-  const jobs = [];
+  const jobs: Job[] = [];
 
   for (const jobRecommendation of jobRecommendations) {
-    const jobDetails = await db
+    const jobResult = await db
       .select()
       .from(jobsTable)
       .where(eq(jobsTable.jobId, jobRecommendation.jobId))
       .limit(1);
-    jobs.push(...jobDetails);
+    const job: Job = jobResult[0];
+    jobs.push(job);
   }
   return jobs;
 };
