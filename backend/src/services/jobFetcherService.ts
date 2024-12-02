@@ -7,17 +7,10 @@ import {
   locationsTable,
   rolesTable,
   userPreferencesTable,
-  usersTable,
 } from '../db/schema';
 import { eq } from 'drizzle-orm';
+import { Job } from '../types/job';
 
-type Job = {
-  title: string;
-  companyName: string;
-  location: string;
-  url: string;
-  roleName: string;
-};
 
 export const fetchAndStoreJobs = async () => {
   // Fetch all job preferences
@@ -61,7 +54,7 @@ export const fetchAndStoreJobs = async () => {
             companyName: job.companyName,
             location: job.location,
             url: job.url,
-            role: job.roleName,
+            roleName: job.roleName,
           })
           .returning();
 

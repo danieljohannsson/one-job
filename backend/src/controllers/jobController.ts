@@ -1,16 +1,8 @@
 // controllers/jobsController.ts
 import dotenv from 'dotenv';
-import { title } from 'process';
+import { Job } from '../types/job';
 
 dotenv.config();
-
-type Job = {
-  title: string;
-  companyName: string;
-  location: string;
-  url: string;
-  roleName: string;
-};
 
 // Helper function to fetch jobs using native fetch API
 export const fetchJobTechJobs = async (
